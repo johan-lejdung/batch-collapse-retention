@@ -1,0 +1,13 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/golang:1.10
+
+    working_directory: /go/src/github.com/johan-lejdung/batch-collapse-retention
+    steps:
+      - checkout
+
+      - run: go get -u github.com/stretchr/testify
+      - run: go test -v -race -coverprofile=coverage.txt -covermode=atomic ./...
+      - run: bash <(curl -s https://codecov.io/bash)
