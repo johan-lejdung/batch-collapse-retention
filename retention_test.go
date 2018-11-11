@@ -31,7 +31,7 @@ func TestExec(t *testing.T) {
 	testInt = intPtr(10)
 	var mutex sync.Mutex
 	bc := retention.CreateBatchCollapse(retention.Config{
-		RetentionDuration: 5 * time.Millisecond,
+		RetentionDuration: 1 * time.Millisecond,
 		MaxDuration:       60 * time.Second,
 		ExecuteFunc: func(value interface{}) {
 			mutex.Lock()
@@ -46,7 +46,7 @@ func TestExec(t *testing.T) {
 	mutex.Unlock()
 	bc.Collapse(10)
 
-	time.Sleep(10 * time.Millisecond)
+	time.Sleep(15 * time.Millisecond)
 	mutex.Lock()
 	assert.Equal(t, 11, *testInt)
 	mutex.Unlock()
@@ -74,12 +74,11 @@ func TestExecMulti(t *testing.T) {
 	bc.Collapse(10)
 	bc.Collapse(10)
 
-	time.Sleep(5 * time.Millisecond)
 	mutex.Lock()
 	assert.Equal(t, 10, *testInt)
 	mutex.Unlock()
 
-	time.Sleep(10 * time.Millisecond)
+	time.Sleep(15 * time.Millisecond)
 	mutex.Lock()
 	assert.Equal(t, 11, *testInt)
 	mutex.Unlock()
