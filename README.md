@@ -1,3 +1,7 @@
+[![CircleCI](https://circleci.com/gh/johan-lejdung/batch-collapse-retention.svg?style=svg)](https://circleci.com/gh/johan-lejdung/batch-collapse-retention)
+
+[![codecov](https://codecov.io/gh/johan-lejdung/batch-collapse-retention/branch/master/graph/badge.svg)](https://codecov.io/gh/johan-lejdung/batch-collapse-retention)
+
 # batch-collapse-retention
 A small package made to batch together - async - results, processes and queues. Listens to SIGTERM
 
