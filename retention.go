@@ -61,10 +61,12 @@ func CreateBatchCollapse(conf Config) *BatchCollapse {
 // Collapse either collapses a value into a previous set value, or sets the value if nil
 // the method also resets the internal timer for when to execute the collapsed batch
 func (bc *BatchCollapse) Collapse(value interface{}) {
+	bc.mutex.Lock()
 	if bc.Value == nil {
 		bc.Value = value
 	}
 	bc.nextExec = time.Now().Add(bc.RetentionDuration)
+	bc.mutex.Unlock()
 }
 
 func (bc *BatchCollapse) executeIfCompleted(ctx context.Context) {
