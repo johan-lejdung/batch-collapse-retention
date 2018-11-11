@@ -5,7 +5,9 @@
 # batch-collapse-retention
 A small package made to batch together - async - results, processes and queues. Listens to SIGTERM
 
-Useful when you want to collapse multiple values or messages into a single one. I made it to group pubsub messages together, and then just send a single one.
+Useful when you want to collapse multiple values or messages into a single one. 
+
+I made this to group pubsub messages together, and finally to send a single one. Since it listens for SIGTERM it's safe as a temporary memory storage.
 
 
 # Install
