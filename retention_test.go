@@ -18,12 +18,13 @@ func TestCollapse(t *testing.T) {
 		ExecuteFunc: func(value interface{}) {
 			log.Printf("Executing function with value %v", value)
 		},
+		RegisterShutdown: true,
 	})
 
-	assert.Nil(t, bc.Value)
-	bc.Collapse(10)
-	assert.NotNil(t, bc.Value)
-	assert.Equal(t, 10, bc.Value)
+	assert.False(t, bc.KeyExists("test"))
+	bc.Collapse("test", 10)
+	assert.True(t, bc.KeyExists("test"))
+	assert.Equal(t, 10, bc.Values["test"])
 }
 
 func TestExec(t *testing.T) {
@@ -44,7 +45,7 @@ func TestExec(t *testing.T) {
 	mutex.Lock()
 	assert.Equal(t, 10, *testInt)
 	mutex.Unlock()
-	bc.Collapse(10)
+	bc.Collapse("test", 10)
 
 	time.Sleep(15 * time.Millisecond)
 	mutex.Lock()
@@ -70,9 +71,9 @@ func TestExecMulti(t *testing.T) {
 	mutex.Lock()
 	assert.Equal(t, 10, *testInt)
 	mutex.Unlock()
-	bc.Collapse(10)
-	bc.Collapse(10)
-	bc.Collapse(10)
+	bc.Collapse("test", 10)
+	bc.Collapse("test", 10)
+	bc.Collapse("test", 10)
 
 	mutex.Lock()
 	assert.Equal(t, 10, *testInt)
@@ -106,13 +107,13 @@ func TestCancel__WithExec(t *testing.T) {
 	mutex.Lock()
 	assert.Equal(t, 10, *testInt)
 	mutex.Unlock()
-	bc.Collapse(10)
+	bc.Collapse("test", 10)
 
 	assert.False(t, bc.IsCanceled)
 	bc.Cancel()
 	assert.True(t, bc.IsCanceled)
 
-	time.Sleep(10 * time.Millisecond)
+	time.Sleep(20 * time.Millisecond)
 	mutex.Lock()
 	assert.Equal(t, 11, *testInt)
 	mutex.Unlock()
