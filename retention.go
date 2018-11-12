@@ -31,6 +31,7 @@ type Config struct {
 	// ExecuteFunc will be called with the Value if the value is set.
 	ExecuteFunc      func(interface{})
 	RegisterShutdown bool
+	ShutdownFunc     func()
 }
 
 // CreateBatchCollapse creates a new instance of BatchCollapse with the help of the provided config
@@ -54,8 +55,10 @@ func CreateBatchCollapse(conf Config) *BatchCollapse {
 				syscall.SIGKILL,
 				syscall.SIGTERM:
 				bc.Cancel()
+				bc.ShutdownFunc()
 			default:
 				log.Printf("Other signal %v", sig)
+				bc.ShutdownFunc()
 			}
 
 		}()
